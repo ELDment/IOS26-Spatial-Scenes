@@ -10,7 +10,10 @@
 - 🎨 **可定制** - 丰富的配置选项
 - 🔧 **模块化** - 支持多种引入方式（UMD、ES6、CommonJS）
 - 🐛 **调试友好** - 内置调试信息显示
-- 🖼️ **背景填充** - 解决旋转时的黑边和虚线问题
+
+## 📱 预览
+
+![✨ SpatialScenes](https://github.com/ELDment/IOS26-Spatial-Scenes/blob/main/SpatialScenes.png)
 
 ## 🚀 快速开始
 
@@ -117,10 +120,6 @@ const scene = new SpatialScene({ container: '#scene' })
 - 当前鼠标坐标
 - 标准化的坐标值
 - 实时旋转角度
-
-## 📱 预览
-
-![✨ SpatialScenes](https://github.com/ELDment/IOS26-Spatial-Scenes/blob/main/SpatialScenes.png)
 
 ## 🎯 使用场景
 
