@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>空间场景 - Spatial Scenes</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+		
+		body {
+			font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+			background: linear-gradient(73deg, #101010 40%, #252525 60%);
+			min-height: 100vh;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			color: white;
+		}
+		
+		.container {
+			text-align: center;
+			max-width: 600px;
+			padding: 20px;
+		}
+		
+		h1 {
+			font-size: 2.5rem;
+			margin-bottom: 10px;
+			font-weight: 300;
+		}
+		
+		.description {
+			opacity: 0.8;
+			margin-bottom: 30px;
+			font-size: 1.1rem;
+		}
+		
+		.scene-container {
+			 margin: 20px auto;
+			 box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+		 }
+		
+		.controls {
+			display: flex;
+			gap: 15px;
+			justify-content: center;
+			margin: 20px 0;
+		}
+		
+		.btn {
+			background: rgba(255,255,255,0.2);
+			border: 1px solid rgba(255,255,255,0.3);
+			color: white;
+			padding: 12px 24px;
+			border-radius: 25px;
+			cursor: pointer;
+			transition: all 0.3s ease;
+			backdrop-filter: blur(10px);
+			font-size: 14px;
+		}
+		
+		.btn:hover {
+			background: rgba(255,255,255,0.3);
+			transform: translateY(-2px);
+		}
+		
+		.info {
+			margin-top: 20px;
+			opacity: 0.7;
+			font-size: 14px;
+		}
+		
+		input[type="file"] {
+			display: none;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<h1>空间场景</h1>
+		<p class="description">对IOS26的空间图片的拙劣模仿（基于算法）</p>
+		
+		<div id="spatialScene" class="scene-container"></div>
+		
+		<div class="controls">
+			<button class="btn" onclick="loadSampleImage()">加载示例</button>
+			<button class="btn" onclick="document.getElementById('imageInput').click()">上传照片</button>
+			<button class="btn" onclick="scene.reset()">重置视角</button>
+			<button class="btn" onclick="destroyScene()">销毁场景</button>
+		</div>
+		
+		<div class="info">
+			<p>移动鼠标体验3D效果</p>
+		</div>
+		
+		<input type="file" id="imageInput" accept="image/*" onchange="loadUserImage(event)">
+	</div>
+
+	<script src="spatial-scene.js"></script>
+	<script>
+		// 创建场景实例
+		let scene = new SpatialScene({
+				container: '#spatialScene',
+				width: 500,
+				height: 350,
+				maxRotation: 15,		// 增加旋转角度，让效果更明显
+				parallaxStrength: 0.5,
+				fillBackground: true,	// 启用背景填充，避免旋转时的黑边和虚线
+				showDebugInfo: false	// 启用调试信息，显示旋转角度
+			});
+		
+		// 加载示例图片
+		function loadSampleImage() {
+			scene.loadImage('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+		}
+		
+		// 加载用户上传的图片
+		function loadUserImage(event) {
+			const file = event.target.files[0];
+			if (file) {
+				const reader = new FileReader();
+				reader.onload = function(e) {
+					scene.loadImage(e.target.result);
+				};
+				reader.readAsDataURL(file);
+			}
+		}
+		
+		// 销毁场景
+		function destroyScene() {
+			if (scene) {
+				scene.destroy();
+				// 重新创建场景实例
+				scene = new SpatialScene({
+					container: '#spatialScene',
+					width: 500,
+					height: 350,
+					maxRotation: 25,
+					parallaxStrength: 0.5,
+					fillBackground: true,
+					showDebugInfo: true
+				});
+			}
+		}
+		
+		// 页面加载时自动加载示例图片
+		window.addEventListener('load', loadSampleImage);
+	</script>
+</body>
+</html>
